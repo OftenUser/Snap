@@ -1321,7 +1321,7 @@ Object.freeze(WHITE);
 Object.freeze(CLEAR);
 
 var standardSettings = {
-    minimumFontHeight: getMinimumFontHeight(), // browser settings
+    minimumFontHeight: getMinimumFontHeight(), // Browser settings
     globalFontFamily: '',
     menuFontName: 'sans-serif',
     menuFontSize: 12,
@@ -1330,10 +1330,10 @@ var standardSettings = {
     prompterFontSize: 12,
     prompterSliderSize: 10,
     handleSize: 15,
-    scrollBarSize: 9, // was 12,
+    scrollBarSize: 9, // Was 12,
     mouseScrollAmount: 40,
     useSliderForInput: false,
-    isTouchDevice: false, // turned on by touch events, don't set
+    isTouchDevice: false, // Turned on by touch events, don't set
     pngPayloadMarker: 'Data\tPayload\tEmbedded',
     rasterizeSVGs: false,
     isFlat: false,
@@ -1364,26 +1364,26 @@ var touchScreenSettings = {
 
 var MorphicPreferences = standardSettings;
 
-// first, try enabling support for retina displays - can be turned off later
+// First, try enabling support for Retina displays - Can be turned off later
 
 /*
-    Support for retina displays has been pioneered and contributed by
+    Support for Retina displays has been pioneered and contributed by
     Bartosz Leper.
 
-    NOTE: this will make changes to the HTMLCanvasElement that - mostly -
-    make Morphic usable on retina displays in very high resolution mode
-    with crisp fonts and clear fine lines without you (the programmer)
+    NOTE: this will make changes to the HTMLCanvasElement that - Mostly -
+    Make Morphic usable on retina displays in very high resolution mode
+    with crisp fonts and clear fine lines without you (The programmer)
     needing to know any specifics, provided both the display and the browser
     support these (Safari currently doesn't), otherwise these utilities will
     not be installed.
-    If you don't want your Morphic application to support retina resolutions
-    you don't have to edit this morphic.js file to comment out the next line
+    If you don't want your Morphic application to support Retina resolutions
+    you don't have to edit this Morphic.js file to comment out the next line
     of code, instead you can simply call
 
         disableRetinaSupport();
 
-    before you create your World(s) in the html page. Disabling retina
-    support also will simply do nothing if retina support is not possible
+    Before you create your World(s) in the HTML page. Disabling Retina
+    Support also will simply do nothing if Retina Support is not possible
     or already disabled, so it's equally safe to call.
 
     For an example how to make retina support user-specifiable refer to
@@ -1395,12 +1395,12 @@ enableRetinaSupport();
 // Global Functions ////////////////////////////////////////////////////
 
 function nop() {
-    // do explicitly nothing
+    // Do explicitly nothing
     return null;
 }
 
 function localize(string) {
-    // override this function with custom localizations
+    // Override this function with custom localizations
     return string;
 }
 
@@ -1409,13 +1409,13 @@ function isNil(thing) {
 }
 
 function contains(list, element) {
-    // answer true if element is a member of list
+    // Answer true if element is a member of list
     return list.indexOf(element) !== -1;
 }
 
 function detect(list, predicate) {
-    // answer the first element of list for which predicate evaluates
-    // true, otherwise answer null
+    // Answer the first element of list for which predicate evaluates
+    // True, otherwise answer null
     var i, size = list.length;
     for (i = 0; i < size; i += 1) {
         if (predicate.call(null, list[i])) {
@@ -1426,7 +1426,7 @@ function detect(list, predicate) {
 }
 
 function sizeOf(object) {
-    // answer the number of own properties
+    // Answer the number of own properties
     var size = 0, key;
     for (key in object) {
         if (Object.prototype.hasOwnProperty.call(object, key)) {
@@ -1455,11 +1455,11 @@ function degrees(radians) {
 
 function fontHeight(height) {
     var minHeight = Math.max(height, MorphicPreferences.minimumFontHeight);
-    return minHeight * 1.2; // assuming 1/5 font size for ascenders
+    return minHeight * 1.2; // Assuming 1/5 font size for ascenders
 }
 
 function isWordChar(aCharacter) {
-    // can't use \b or \w because they ignore diacritics
+    // Can't use \b or \w because they ignore diacritics
     return aCharacter.match(/[A-zÀ-ÿ0-9]/);
 }
 
@@ -1472,11 +1472,11 @@ function isURL(text) {
 }
 
 function newCanvas(extentPoint, nonRetina, recycleMe) {
-    // answer a new empty instance of Canvas, don't display anywhere
-    // nonRetina - optional Boolean "false"
-    // by default retina support is automatic
-    // optional existing canvas to be used again, unless it is marked as
-    // being shared among Morphs (dataset property "morphicShare")
+    // Answer a new empty instance of Canvas, don't display anywhere
+    // NonRetina - Optional Boolean "false"
+    // By default, Retina support is automatic
+    // Optional existing canvas to be used again, unless it is marked as
+    // Being shared among Morphs (Dataset property "morphicShare")
     var canvas, ext;
     nonRetina = nonRetina || false;
     ext = (extentPoint ||
@@ -1485,8 +1485,7 @@ function newCanvas(extentPoint, nonRetina, recycleMe) {
     if (recycleMe &&
             !recycleMe.dataset.morphicShare &&
             (recycleMe.isRetinaEnabled || false) !== nonRetina &&
-            ext.x === recycleMe.width && ext.y === recycleMe.height
-    ) {
+            ext.x === recycleMe.width && ext.y === recycleMe.height) {
         canvas = recycleMe;
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         return canvas;
@@ -1502,7 +1501,7 @@ function newCanvas(extentPoint, nonRetina, recycleMe) {
 }
 
 function copyCanvas(aCanvas) {
-    // answer a deep copy of a canvas element respecting its retina status
+    // Answer a deep copy of a canvas element respecting its retina status
     var c;
     if (aCanvas && aCanvas.width && aCanvas.height) {
         c = newCanvas(
@@ -1516,7 +1515,7 @@ function copyCanvas(aCanvas) {
 }
 
 function getMinimumFontHeight() {
-    // answer the height of the smallest font renderable in pixels
+    // Answer the height of the smallest font renderable in pixels
     var str = 'I',
         size = 50,
         canvas = document.createElement('canvas'),
@@ -1545,7 +1544,7 @@ function getMinimumFontHeight() {
 }
 
 function getDocumentPositionOf(aDOMelement) {
-    // answer the relative coordinates of a DOM element in the viewport
+    // Answer the relative coordinates of a DOM element in the viewport
     var rect = aDOMelement.getBoundingClientRect(),
     scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
     scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -1553,7 +1552,7 @@ function getDocumentPositionOf(aDOMelement) {
 }
 
 function copy(target) {
-    // answer a shallow copy of target
+    // Answer a shallow copy of target
     var value, c, property, keys, l, i;
     if (typeof target !== 'object') {
         return target;
@@ -1569,11 +1568,11 @@ function copy(target) {
         for (l = keys.length, i = 0; i < l; i += 1) {
             property = keys[i];
             if (target[property] instanceof HTMLCanvasElement) {
-                // tag canvas elements as being shared,
-                // so the next time when rerendering a Morph
-                // instead of recycling the shared canvas a
-                // new unshared one get created
-                // see newCanvas() function
+                // Tag canvas elements as being shared,
+                // So the next time when rerendering a Morph
+                // Instead of recycling the shared canvas a
+                // New unshared one get created
+                // See newCanvas() function
                 target[property].dataset.morphicShare = 'true';
             }
             c[property] = target[property];
@@ -1629,22 +1628,22 @@ function embedMetadataPNG(aCanvas, aString) {
 // Retina Display Support //////////////////////////////////////////////
 
 /*
-    By default retina support gets installed when Morphic.js loads. There
-    are two global functions that let you test for retina availability:
+    By default, Tetina Support gets installed when Morphic.js loads. There
+    are 2 global functions that let you test for Retina availability:
 
-        isRetinaSupported() - Boolean, whether retina support is available
-        isRetinaEnabled()   - Boolean, whether currently in retina mode
+        isRetinaSupported() - Boolean, whether Retina Support is available
+        isRetinaEnabled()   - Boolean, whether currently in Retina Mode
 
-    and two more functions that let you control retina support if it is
+    And 2 more functions that let you control Retina Support if it is
     available:
 
         enableRetinaSupport()
         disableRetinaSupport()
 
-    Both of these internally test whether retina is available, so they are
+    Both of these internally test whether Retina is available, so they are
     safe to call directly.
 
-    Even when in retina mode it often makes sense to use non-high-resolution
+    Even when in Retina Mode, it often makes sense to use non-high-resolution
     canvasses for simple shapes in order to save system resources and
     optimize performance. Examples are costumes and backgrounds in Snap.
     In Morphic you can create new canvas elements using
@@ -1705,20 +1704,20 @@ function enableRetinaSupport() {
 
         // originalDevicePixelRatio = window.devicePixelRatio,
 
-    // [Jens]: As of summer 2016 non-integer devicePixelRatios lead to
-    // artifacts when blitting images onto canvas elements in all browsers
-    // except Chrome, especially Firefox, Edge, IE (Safari doesn't even
-    // support retina mode as implemented here).
-    // therefore - to ensure crisp fonts - use the ceiling of whatever
-    // the devicePixelRatio is. This needs more memory, but looks nicer.
+    // [Jens]: As of Summer 2016, non-integer devicePixelRatios lead to
+    // Artifacts when blitting images onto canvas elements in all browsers
+    // Except Chrome, especially Firefox, Edge, Internet Explorer (Safari doesn't even
+    // Support Retina Mode as implemented here).
+    // Therefore - To ensure crisp fonts - Use the ceiling of whatever
+    // The devicePixelRatio is. This needs more memory, but looks nicer.
 
         originalDevicePixelRatio = Math.ceil(window.devicePixelRatio),
 
         canvasProto = HTMLCanvasElement.prototype,
         contextProto = CanvasRenderingContext2D.prototype,
 
-    // [Jens]: keep track of original properties in a dictionary
-    // so they can be iterated over and restored
+    // [Jens]: Keep track of original properties in a dictionary
+    // So they can be iterated over and restored
         uber = {
             drawImage: contextProto.drawImage,
             getImageData: contextProto.getImageData,
