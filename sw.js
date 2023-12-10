@@ -3,7 +3,7 @@ var snapVersion = '9.1.0',
     filesToCache = [
         'snap.html',
 
-        // program
+        // Program
         'src/morphic.js',
         'src/symbols.js',
         'src/widgets.js',
@@ -28,7 +28,7 @@ var snapVersion = '9.1.0',
         'src/sha512.js',
         'src/FileSaver.min.js',
 
-        // translations
+        // Translations
         'locale/lang-ar.js',
         'locale/lang-bg.js',
         'locale/lang-bn.js',
@@ -75,7 +75,7 @@ var snapVersion = '9.1.0',
         'locale/lang-zh_CN.js',
         'locale/lang-zh_TW.js',
 
-        //libraries
+        // Libraries
         'libraries/LIBRARIES',
 
         'libraries/animation_module.xml',
@@ -116,13 +116,13 @@ var snapVersion = '9.1.0',
 
         'libraries/TuneScope.xml',
 
-            // TuneScope dependencies
+            // TuneScope Dependencies
             'libraries/TuneScope/TuneScope.js',
             'libraries/TuneScope/TS_init.js',
             'libraries/TuneScope/webmidi.iife.js',
             'libraries/TuneScope/WebAudioFontPlayer.js',
 
-            // TuneScope instruments
+            // TuneScope Instruments
             'libraries/TuneScope/12849_21_FluidR3_GM_sf2_file.js',
             'libraries/TuneScope/12848_21_FluidR3_GM_sf2_file.js',
             'libraries/TuneScope/12847_21_FluidR3_GM_sf2_file.js',
@@ -169,7 +169,7 @@ var snapVersion = '9.1.0',
         'libraries/word-sentence.xml',
         'libraries/words_module.xml',
 
-        //costumes
+        // Costumes
         'Costumes/COSTUMES',
 
         'Costumes/abby-a.svg',
@@ -759,7 +759,8 @@ var snapVersion = '9.1.0',
         'Examples/vee.xml'
     ];
 
-console.log('service worker executed')
+console.log('Service worker executed');
+
 /* Start the service worker and cache all of the app's content */
 self.addEventListener('install', function(e) {
     e.waitUntil(
