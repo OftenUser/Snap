@@ -1666,7 +1666,7 @@ function embedMetadataPNG(aCanvas, aString) {
     pass in the optional second Boolean <true> flag the function returns
     a non-retina copy and leaves the target canvas unchanged. An example
     of this normalize mechanism is converting the penTrails layer of Snap's
-    stage (high-resolution) into a sprite-costume (normal resolution).
+    stage (High-resolution) into a sprite-costume (Normal resolution).
 */
 
 function enableRetinaSupport() {
@@ -1705,19 +1705,18 @@ function enableRetinaSupport() {
         // originalDevicePixelRatio = window.devicePixelRatio,
 
     // [Jens]: As of Summer 2016, non-integer devicePixelRatios lead to
-    // Artifacts when blitting images onto canvas elements in all browsers
-    // Except Chrome, especially Firefox, Edge, Internet Explorer (Safari doesn't even
-    // Support Retina Mode as implemented here).
+    // artifacts when blitting images onto canvas elements in all browsers
+    // except Chrome, especially Firefox, Microsoft Edge, Internet Explorer (Safari doesn't even
+    // support Retina Mode as implemented here).
     // Therefore - To ensure crisp fonts - Use the ceiling of whatever
-    // The devicePixelRatio is. This needs more memory, but looks nicer.
+    // the devicePixelRatio is. This needs more memory, but looks nicer.
 
         originalDevicePixelRatio = Math.ceil(window.devicePixelRatio),
 
         canvasProto = HTMLCanvasElement.prototype,
         contextProto = CanvasRenderingContext2D.prototype,
 
-    // [Jens]: Keep track of original properties in a dictionary
-    // So they can be iterated over and restored
+    // [Jens]: Keep track of original properties in a dictionary so they can be iterated over and restored
         uber = {
             drawImage: contextProto.drawImage,
             getImageData: contextProto.getImageData,
@@ -1744,9 +1743,9 @@ function enableRetinaSupport() {
             )
         };
 
-    // [Jens]: only install retina utilities if the display supports them
+    // [Jens]: Only install retina utilities if the display supports them
     if (backingStorePixelRatio === originalDevicePixelRatio) {return; }
-    // [Jens]: check whether properties can be overridden, needed for Safari
+    // [Jens]: Check whether properties can be overridden, needed for Safari
     if (Object.keys(uber).some(any => {
         var prop = uber[any];
         return prop.hasOwnProperty('configurable') && (!prop.configurable);
@@ -1758,8 +1757,7 @@ function enableRetinaSupport() {
     }
 
     canvasProto._isRetinaEnabled = true;
-    // [Jens]: remember the original non-retina properties,
-    // so they can be restored again
+    // [Jens]: Remember the original non-retina properties, so they can be restored again
     canvasProto._bak = uber;
 
     Object.defineProperty(canvasProto, 'isRetinaEnabled', {
@@ -1777,7 +1775,7 @@ function enableRetinaSupport() {
                 this.height = prevHeight;
             }
         },
-        configurable: true // [Jens]: allow to be deleted and reconfigured
+        configurable: true // [Jens]: Allow to be deleted and reconfigured
     });
 
     Object.defineProperty(canvasProto, 'width', {
@@ -1785,8 +1783,8 @@ function enableRetinaSupport() {
             return uber.width.get.call(this) / getPixelRatio(this);
         },
         set: function(width) {
-            try { // workaround one of FF's dreaded NS_ERROR_FAILURE bugs
-                // this should be taken out as soon as FF gets fixed again
+            try { // Workaround one of FF's dreaded NS_ERROR_FAILURE bugs
+                // This should be taken out as soon as FF gets fixed again
                 var pixelRatio = getPixelRatio(this),
                     context;
                 uber.width.set.call(this, width * pixelRatio);
@@ -2001,14 +1999,14 @@ function normalizeCanvas(aCanvas, getCopy) {
     Animations handle gradual transitions between one state and another over a
     period of time. Transition effects can be specified using easing functions.
     An easing function maps a fraction of the transition time to a fraction of
-    the state delta. This way accelerating / decelerating and bouncing sliding
+    the state delta. This way accelerating/decelerating and bouncing sliding
     effects can be accomplished.
 
-    Animations are generic and not limited to motion, i.e. they can also handle
+    Animations are generic and not limited to motion, I.E. they can also handle
     other transitions such as color changes, transparency fadings, growing,
-    shrinking, turning etc.
+    shrinking, turning ETC.
 
-    Animations need to be stepped by a scheduler, e. g. an interval function.
+    Animations need to be stepped by a scheduler, E.G. an interval function.
     In Morphic the preferred way to run an animation is to register it with
     the World by adding it to the World's animation queue. The World steps each
     registered animation once per display cycle independently of the Morphic
@@ -2044,10 +2042,10 @@ function Animation(setter, getter, delta, duration, easing, onComplete) {
 }
 
 Animation.prototype.easings = {
-    // dictionary of a few pre-defined easing functions used to transition
-    // two states
+    // Dictionary of a few pre-defined easing functions used to transition
+    // 2 states
 
-    // ease both in and out:
+    // Ease both in and out:
     linear: t => t,
     sinusoidal: t => 1 - Math.cos(radians(t * 90)),
     quadratic: t => t < 0.5 ? 2 * t * t : ((4 - (2 * t)) * t) - 1,
@@ -2156,9 +2154,9 @@ Color.prototype.eq = function (aColor, observeAlpha) {
 };
 
 Color.prototype.isCloseTo = function (aColor, observeAlpha, tolerance) {
-    // experimental - answer whether a color is "close" to another one by
-    // a given percentage. tolerance is the percentage by which each color
-    // channel may diverge, alpha needs to be the exact same unless ignored
+    // Experimental - Answer whether a color is "close" to another one by
+    // a given percentage. Tolerance is the percentage by which each color
+    // channel may diverge, Alpha needs to be the exact same unless ignored
     var thres = 2.55 * (tolerance || 10);
 
     function dist(a, b) {
@@ -2173,10 +2171,10 @@ Color.prototype.isCloseTo = function (aColor, observeAlpha, tolerance) {
         (observeAlpha ? this.a === aColor.a : true);
 };
 
-// Color conversion (hsv):
+// Color Conversion (HSV):
 
 Color.prototype.hsv = function () {
-    // ignore alpha
+    // Ignore Alpha
     var max, min, h, s, v, d,
         rr = this.r / 255,
         gg = this.g / 255,
@@ -2192,15 +2190,15 @@ Color.prototype.hsv = function () {
         h = 0;
     } else {
         switch (max) {
-        case rr:
-            h = (gg - bb) / d + (gg < bb ? 6 : 0);
-            break;
-        case gg:
-            h = (bb - rr) / d + 2;
-            break;
-        case bb:
-            h = (rr - gg) / d + 4;
-            break;
+        	case rr:
+            		h = (gg - bb) / d + (gg < bb ? 6 : 0);
+            		break;
+        	case gg:
+            		h = (bb - rr) / d + 2;
+            		break;
+        	case bb:
+            		h = (rr - gg) / d + 4;
+            		break;
         }
         h /= 6;
     }
@@ -2208,7 +2206,7 @@ Color.prototype.hsv = function () {
 };
 
 Color.prototype.set_hsv = function (h, s, v) {
-    // ignore alpha, h, s and v are to be within [0, 1]
+    // Ignore Alpha, H, S and V are to be within [0, 1]
     var i, f, p, q, t;
     i = Math.floor(h * 6);
     f = h * 6 - i;
@@ -2216,36 +2214,36 @@ Color.prototype.set_hsv = function (h, s, v) {
     q = v * (1 - f * s);
     t = v * (1 - (1 - f) * s);
     switch (i % 6) {
-    case 0:
-        this.r = v;
-        this.g = t;
-        this.b = p;
-        break;
-    case 1:
-        this.r = q;
-        this.g = v;
-        this.b = p;
-        break;
-    case 2:
-        this.r = p;
-        this.g = v;
-        this.b = t;
-        break;
-    case 3:
-        this.r = p;
-        this.g = q;
-        this.b = v;
-        break;
-    case 4:
-        this.r = t;
-        this.g = p;
-        this.b = v;
-        break;
-    case 5:
-        this.r = v;
-        this.g = p;
-        this.b = q;
-        break;
+    	case 0:
+        	this.r = v;
+        	this.g = t;
+        	this.b = p;
+        	break;
+    	case 1:
+        	this.r = q;
+        	this.g = v;
+		this.b = p;
+        	break;
+    	case 2:
+        	this.r = p;
+        	this.g = v;
+        	this.b = t;
+        	break;
+    	case 3:
+        	this.r = p;
+        	this.g = q;
+        	this.b = v;
+        	break;
+    	case 4:
+        	this.r = t;
+        	this.g = p;
+        	this.b = v;
+        	break;
+    	case 5:
+        	this.r = v;
+        	this.g = p;
+    	    	this.b = q;
+        	break;
     }
 
     this.r *= 255;
@@ -2254,10 +2252,10 @@ Color.prototype.set_hsv = function (h, s, v) {
 
 };
 
-// Color conversion (hsl):
+// Color Conversion (HSL):
 
 Color.prototype.hsl = function () {
-    // ignore alpha
+    // Ignore Alpha
     var rr = this.r / 255,
         gg = this.g / 255,
         bb = this.b / 255,
@@ -2266,22 +2264,22 @@ Color.prototype.hsl = function () {
         s,
         l = (max + min) / 2,
         d;
-    if (max === min) { // achromatic
+    if (max === min) { // Achromatic
         h = 0;
         s = 0;
     } else {
         d = max - min;
         s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
         switch (max) {
-        case rr:
-            h = (gg - bb) / d + (gg < bb ? 6 : 0);
-            break;
-        case gg:
-            h = (bb - rr) / d + 2;
-            break;
-        case bb:
-            h = (rr - gg) / d + 4;
-            break;
+        	case rr:
+            		h = (gg - bb) / d + (gg < bb ? 6 : 0);
+            		break;
+        	case gg:
+            		h = (bb - rr) / d + 2;
+            		break;
+        	case bb:
+            		h = (rr - gg) / d + 4;
+            		break;
         }
         h /= 6;
     }
@@ -2289,7 +2287,7 @@ Color.prototype.hsl = function () {
 };
 
 Color.prototype.set_hsl = function (h, s, l) {
-    // ignore alpha, h, s and l are to be within [0, 1]
+    // Ignore Alpha, H, S and L are to be within [0, 1]
     var q, p;
 
     function hue2rgb(p, q, t) {
@@ -2311,7 +2309,7 @@ Color.prototype.set_hsl = function (h, s, l) {
         return p;
     }
 
-    if (s == 0) { // achromatic
+    if (s == 0) { // Achromatic
         this.r = l;
         this.g = l;
         this.b = l;
@@ -2328,10 +2326,10 @@ Color.prototype.set_hsl = function (h, s, l) {
     this.b *= 255;
 };
 
-// Color mixing:
+// Color Mixing:
 
 Color.prototype.mixed = function (proportion, otherColor) {
-    // answer a copy of this color mixed with another color, ignore alpha
+    // Answer a copy of this color mixed with another color, ignore Alpha
     var frac1 = Math.min(Math.max(proportion, 0), 1),
         frac2 = 1 - frac1;
     return new Color(
@@ -2342,7 +2340,7 @@ Color.prototype.mixed = function (proportion, otherColor) {
 };
 
 Color.prototype.darker = function (percent) {
-    // return an rgb-interpolated darker copy of me, ignore alpha
+    // Return an RGB-interpolated darker copy of me, ignore Alpha
     var fract = 0.8333;
     if (percent) {
         fract = (100 - percent) / 100;
@@ -2351,7 +2349,7 @@ Color.prototype.darker = function (percent) {
 };
 
 Color.prototype.lighter = function (percent) {
-    // return an rgb-interpolated lighter copy of me, ignore alpha
+    // Return an RGB-interpolated lighter copy of me, ignore Alpha
     var fract = 0.8333;
     if (percent) {
         fract = (100 - percent) / 100;
@@ -2360,7 +2358,7 @@ Color.prototype.lighter = function (percent) {
 };
 
 Color.prototype.dansDarker = function () {
-    // return an hsv-interpolated darker copy of me, ignore alpha
+    // Return an HSV-interpolated darker copy of me, ignore Alpha
     var hsv = this.hsv(),
         result = new Color(),
         vv = Math.max(hsv[2] - 0.16, 0);
@@ -2386,27 +2384,27 @@ Color.prototype.solid = function () {
 
 // Points //////////////////////////////////////////////////////////////
 
-// Point instance creation:
+// Point Instance Creation:
 
 function Point(x, y) {
     this.x = x || 0;
     this.y = y || 0;
 }
 
-// Point string representation: e.g. '12@68'
+// Point String Representation: E.G. '12@68'
 
 Point.prototype.toString = function () {
     return Math.round(this.x.toString()) +
         '@' + Math.round(this.y.toString());
 };
 
-// Point copying:
+// Point Copying:
 
 Point.prototype.copy = function () {
     return new Point(this.x, this.y);
 };
 
-// Point comparison:
+// Point Comparison:
 
 Point.prototype.eq = function (aPoint) {
     // ==
@@ -2443,7 +2441,7 @@ Point.prototype.min = function (aPoint) {
         Math.min(this.y, aPoint.y));
 };
 
-// Point conversion:
+// Point Conversion:
 
 Point.prototype.round = function () {
     return new Point(Math.round(this.x), Math.round(this.y));
@@ -2472,7 +2470,7 @@ Point.prototype.ceil = function () {
     return new Point(Math.ceil(this.x), Math.ceil(this.y));
 };
 
-// Point arithmetic:
+// Point Arithmetic:
 
 Point.prototype.add = function (other) {
     if (other instanceof Point) {
@@ -2511,7 +2509,7 @@ Point.prototype.floorDivideBy = function (other) {
         Math.floor(this.y / other));
 };
 
-// Point polar coordinates:
+// Point Polar Coordinates:
 
 Point.prototype.r = function () {
     var t = (this.multiplyBy(this));
@@ -2520,7 +2518,7 @@ Point.prototype.r = function () {
 
 Point.prototype.degrees = function () {
 /*
-    answer the angle I make with origin in degrees.
+    Answer the angle I make with origin in degrees.
     Right is 0, down is 90
 */
     var tan, theta;
@@ -2544,7 +2542,7 @@ Point.prototype.degrees = function () {
 
 Point.prototype.theta = function () {
 /*
-    answer the angle I make with origin in radians.
+    Answer the angle I make with origin in radians.
     Right is 0, down is 90
 */
     var tan, theta;
@@ -2566,7 +2564,7 @@ Point.prototype.theta = function () {
     return radians(180) + theta;
 };
 
-// Point functions:
+// Point Functions:
 
 Point.prototype.crossProduct = function (aPoint) {
     return this.multiplyBy(aPoint.mirror());
@@ -2577,7 +2575,7 @@ Point.prototype.distanceTo = function (aPoint) {
 };
 
 Point.prototype.rotate = function (direction, center) {
-    // direction must be 'right', 'left' or 'pi'
+    // Direction must be 'right', 'left' or 'pi'
     var offset = this.subtract(center);
     if (direction === 'right') {
         return new Point(-offset.y, offset.y).add(center);
@@ -2585,16 +2583,16 @@ Point.prototype.rotate = function (direction, center) {
     if (direction === 'left') {
         return new Point(offset.y, -offset.y).add(center);
     }
-    // direction === 'pi'
+    // Direction === 'pi'
     return center.subtract(offset);
 };
 
 Point.prototype.flip = function (direction, center) {
-    // direction must be 'vertical' or 'horizontal'
+    // Direction must be 'vertical' or 'horizontal'
     if (direction === 'vertical') {
         return new Point(this.x, center.y * 2 - this.y);
     }
-    // direction === 'horizontal'
+    // Direction === 'horizontal'
     return new Point(center.x * 2 - this.x, this.y);
 };
 
@@ -2615,7 +2613,7 @@ Point.prototype.distanceAngle = function (dist, angle) {
     return new Point(x + this.x, this.y + y);
 };
 
-// Point transforming:
+// Point Transforming:
 
 Point.prototype.scaleBy = function (scalePoint) {
     return this.multiplyBy(scalePoint);
@@ -2636,7 +2634,7 @@ Point.prototype.rotateBy = function (angle, centerPoint) {
     );
 };
 
-// Point conversion:
+// Point Conversion:
 
 Point.prototype.asArray = function () {
     return [this.x, this.y];
@@ -2644,7 +2642,7 @@ Point.prototype.asArray = function () {
 
 // Rectangles //////////////////////////////////////////////////////////
 
-// Rectangle instance creation:
+// Rectangle Instance Creation:
 
 function Rectangle(left, top, right, bottom) {
     this.init(new Point((left || 0), (top || 0)),
@@ -2656,14 +2654,14 @@ Rectangle.prototype.init = function (originPoint, cornerPoint) {
     this.corner = cornerPoint;
 };
 
-// Rectangle string representation: e.g. '[0@0 | 160@80]'
+// Rectangle String Representation: E.G. '[0@0 | 160@80]'
 
 Rectangle.prototype.toString = function () {
     return '[' + this.origin.toString() + ' | ' +
         this.extent().toString() + ']';
 };
 
-// Rectangle copying:
+// Rectangle Copying:
 
 Rectangle.prototype.copy = function () {
     return new Rectangle(
@@ -2674,10 +2672,10 @@ Rectangle.prototype.copy = function () {
     );
 };
 
-// creating Rectangle instances from Points:
+// Creating Rectangle Instances From Points:
 
 Point.prototype.corner = function (cornerPoint) {
-    // answer a new Rectangle
+    // Answer a new Rectangle
     return new Rectangle(
         this.x,
         this.y,
@@ -2687,7 +2685,7 @@ Point.prototype.corner = function (cornerPoint) {
 };
 
 Point.prototype.rectangle = function (aPoint) {
-    // answer a new Rectangle
+    // Answer a new Rectangle
     var org, crn;
     org = this.min(aPoint);
     crn = this.max(aPoint);
@@ -2695,15 +2693,15 @@ Point.prototype.rectangle = function (aPoint) {
 };
 
 Point.prototype.extent = function (aPoint) {
-    //answer a new Rectangle
+    // Answer a new Rectangle
     var crn = this.add(aPoint);
     return new Rectangle(this.x, this.y, crn.x, crn.y);
 };
 
-// Rectangle accessing - setting:
+// Rectangle Accessing - Setting:
 
 Rectangle.prototype.setTo = function (left, top, right, bottom) {
-    // note: all inputs are optional and can be omitted
+    // NOTE: All inputs are optional and can be omitted
 
     this.origin = new Point(
         left || ((left === 0) ? 0 : this.left()),
@@ -2716,7 +2714,7 @@ Rectangle.prototype.setTo = function (left, top, right, bottom) {
     );
 };
 
-// Rectangle mutating
+// Rectangle Mutating
 
 Rectangle.prototype.setExtent = function(aPoint) {
     this.setWidth(aPoint.x);
@@ -2731,10 +2729,10 @@ Rectangle.prototype.setHeight = function (height) {
     this.corner.y = this.origin.y + height;
 };
 
-// Rectangle accessing - getting:
+// Rectangle Accessing - Getting:
 
 Rectangle.prototype.area = function () {
-    //requires width() and height() to be defined
+    // Requires width() and height() to be defined
     var w = this.width();
     if (w < 0) {
         return 0;
@@ -2823,7 +2821,7 @@ Rectangle.prototype.position = function () {
     return this.origin;
 };
 
-// Rectangle comparison:
+// Rectangle Comparison:
 
 Rectangle.prototype.eq = function (aRect) {
     return this.origin.eq(aRect.origin) &&
@@ -2838,10 +2836,10 @@ Rectangle.prototype.abs = function () {
     return newOrigin.corner(newCorner);
 };
 
-// Rectangle functions:
+// Rectangle Functions:
 
 Rectangle.prototype.insetBy = function (delta) {
-    // delta can be either a Point or a Number
+    // Delta can be either a Point or a Number
     var result = new Rectangle();
     result.origin = this.origin.add(delta);
     result.corner = this.corner.subtract(delta);
@@ -2849,7 +2847,7 @@ Rectangle.prototype.insetBy = function (delta) {
 };
 
 Rectangle.prototype.expandBy = function (delta) {
-    // delta can be either a Point or a Number
+    // Delta can be either a Point or a Number
     var result = new Rectangle();
     result.origin = this.origin.subtract(delta);
     result.corner = this.corner.add(delta);
@@ -2857,7 +2855,7 @@ Rectangle.prototype.expandBy = function (delta) {
 };
 
 Rectangle.prototype.growBy = function (delta) {
-    // delta can be either a Point or a Number
+    // Delta can be either a Point or a Number
     var result = new Rectangle();
     result.origin = this.origin.copy();
     result.corner = this.corner.add(delta);
@@ -2879,7 +2877,7 @@ Rectangle.prototype.merge = function (aRect) {
 };
 
 Rectangle.prototype.mergeWith = function (aRect) {
-    // mutates myself
+    // Mutates myself
     this.origin = this.origin.min(aRect.origin);
     this.corner = this.corner.max(aRect.corner);
 };
@@ -2889,8 +2887,8 @@ Rectangle.prototype.round = function () {
 };
 
 Rectangle.prototype.spread = function () {
-    // round me by applying floor() to my origin and ceil() to my corner
-    // avoids artefacts on retina displays
+    // Round me by applying floor() to my origin and ceil() to my corner
+    // Avoids artefacts on Retina displays
     return this.origin.floor().corner(this.corner.ceil());
 };
 
@@ -2918,13 +2916,13 @@ Rectangle.prototype.amountToTranslateWithin = function (aRect) {
 };
 
 Rectangle.prototype.regionsAround = function (aRect) {
-    // answer a list of rectangles surrounding another one,
+    // Answer a list of rectangles surrounding another one,
     // use this to clip "holes"
     var regions = [];
     if (!this.intersects(aRect)) {
         return regions;
     }
-    // left
+    // Left
     if (aRect.left() > this.left()) {
         regions.push(
             new Rectangle(
@@ -2935,7 +2933,7 @@ Rectangle.prototype.regionsAround = function (aRect) {
             )
         );
     }
-    // above:
+    // Above
     if (aRect.top() > this.top()) {
         regions.push(
             new Rectangle(
@@ -2946,7 +2944,7 @@ Rectangle.prototype.regionsAround = function (aRect) {
             )
         );
     }
-    // right:
+    // Right
     if (aRect.right() < this.right()) {
         regions.push(
             new Rectangle(
@@ -2957,7 +2955,7 @@ Rectangle.prototype.regionsAround = function (aRect) {
             )
         );
     }
-    // below:
+    // Below
     if (aRect.bottom() < this.bottom()) {
         regions.push(
             new Rectangle(
@@ -2971,7 +2969,7 @@ Rectangle.prototype.regionsAround = function (aRect) {
     return regions;
 };
 
-// Rectangle testing:
+// Rectangle Testing:
 
 Rectangle.prototype.containsPoint = function (aPoint) {
     return this.origin.le(aPoint) && aPoint.lt(this.corner);
@@ -2998,7 +2996,7 @@ Rectangle.prototype.isNearTo = function (aRect, threshold) {
         (ro.y - border <= this.corner.y);
 };
 
-// Rectangle transforming:
+// Rectangle Transforming:
 
 Rectangle.prototype.scaleBy = function (scale) {
     // scale can be either a Point or a scalar
