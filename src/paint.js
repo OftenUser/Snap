@@ -1,31 +1,31 @@
 /*
     paint.js
 
-    a paint editor for Snap!
-    inspired by the Scratch paint editor.
+    A paint editor for Snap!
+    Inspired by the Scratch Paint Editor.
 
-    written by Kartik Chandra
+    Written by Kartik Chandra
     Copyright (C) 2019 by Kartik Chandra
 
     This file is part of Snap!.
 
-    Snap! is free software: you can redistribute it and/or modify
+    Snap! is free software: You can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of
-    the License, or (at your option) any later version.
+    published by the Free Software Foundation, either Version 3 of
+    the License, or (At your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
     GNU Affero General Public License for more details.
 
     You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-    toc
+    Table Of Contents
     ---
-    the following list shows the order in which all constructors are
+    The following list shows the order in which all constructors are
     defined. Use this list to locate code in this document:
 
         PaintEditorMorph
@@ -33,7 +33,7 @@
         PaintCanvasMorph
 
 
-    credits
+    Credits
     -------
     Nathan Dinsmore contributed a fully working prototype,
     Nathan's brilliant flood-fill tool has been more or less
@@ -43,47 +43,43 @@
     introduced many other bugs in that process. :-)
 
 
-    revision history
+    Revision History
     ----------------
-    May 10 - first full release (Kartik)
-    May 14 - bugfixes, Snap integration (Jens)
-    May 16 - flat design adjustments (Jens)
-    July 12 - pipette tool, code formatting adjustments (Jens)
-    Sept 16 - flood fill freeze fix (Kartik)
-    Jan 08 - mouse leave dragging fix (Kartik)
-    Feb 11 - dynamically adjust to stage dimensions (Jens)
-    Apr 30 - localizations (Manuel)
-    June 3 - transformations (Kartik)
-    June 4 - tweaks (Jens)
-    Aug 24 - floodfill alpha-integer issue (Kartik)
-    Sep 29 - tweaks (Jens)
-    Sep 28 [of the following year :)] - Try to prevent antialiasing (Kartik)
-    Oct 02 - revert disable smoothing (Jens)
-    Dec 15 - center rotation point on costume creating (Craxic)
-    Jan 18 - avoid pixel collision detection in PaintCanvas (Jens)
-    Mar 22 - fixed automatic rotation center point mechanism (Jens)
-    May 10 - retina display support adjustments (Jens)
-    2017
-    Apr 10 - getGlobalPixelColor adjustment for Chrome & retina (Jens)
-    2018
-    Jan 22 - floodfill alpha tweak (Bernat)
-    Mar 19 - vector paint editor (Bernat)
-
-    2020 Apr 14 - Morphic2 migration (Jens)
-    2020 May 17 - Pipette alpha fix (Joan)
-    2020 Jul 13 - modified scale buttons (Jadga)
-
-    2021 Mar 17 - moved stage dimension handling to scenes (Jens)
+    May 10 - First full release (Kartik)
+    May 14 - Bugfixes, Snap integration (Jens)
+    May 16 - Flat design adjustments (Jens)
+    July 12 - Pipette tool, code formatting adjustments (Jens)
+    September 16 - Flood fill freeze fix (Kartik)
+    January 8 - Mouse leave dragging fix (Kartik)
+    February 11 - Dynamically adjust to stage dimensions (Jens)
+    April 30 - Localizations (Manuel)
+    June 3 - Transformations (Kartik)
+    June 4 - Tweaks (Jens)
+    August 24 - Floodfill alpha-integer issue (Kartik)
+    September 29 - Tweaks (Jens)
+    September 28 [Of the following year :)] - Try to prevent antialiasing (Kartik)
+    October 2 - Revert disable smoothing (Jens)
+    December 15 - Center rotation point on costume creating (Craxic)
+    January 18 - Avoid pixel collision detection in PaintCanvas (Jens)
+    March 22 - Fixed automatic rotation center point mechanism (Jens)
+    May 10, 2017 - Retina display support adjustments (Jens)
+    April 10, 2018 - GetGlobalPixelColor adjustment for Chrome & retina (Jens)
+    January 22 - Floodfill alpha tweak (Bernat)
+    March 19 - Vector paint editor (Bernat)
+    April 14, 2020 - Morphic2 migration (Jens)
+    May 17, 2020 - Pipette alpha fix (Joan)
+    July 13, 2020 - Modified scale buttons (Jadga)
+    March 17, 2021 - Moved stage dimension handling to scenes (Jens)
 */
 
-/*global Point, Rectangle, DialogBoxMorph, AlignmentMorph, PushButtonMorph, nop,
+/* Global Point, Rectangle, DialogBoxMorph, AlignmentMorph, PushButtonMorph, nop,
 Color, SymbolMorph, newCanvas, Morph, StringMorph, Costume, SpriteMorph,  isNil,
 localize, InputFieldMorph, SliderMorph, ToggleMorph, ToggleButtonMorph, modules,
-BoxMorph, radians, MorphicPreferences, getDocumentPositionOf, SVG_Costume*/
+BoxMorph, radians, MorphicPreferences, getDocumentPositionOf, SVG_Costume */
 
-/*jshint esversion: 6*/
+/* JSHint esversion: 6*/
 
-// Global stuff ////////////////////////////////////////////////////////
+// Global Stuff ////////////////////////////////////////////////////////
 
 modules.paint = '2023-May-24';
 
@@ -108,20 +104,20 @@ function PaintEditorMorph() {
 }
 
 PaintEditorMorph.prototype.init = function () {
-    // additional properties:
+    // Additional properties:
     this.ide = null;
-    this.paper = null; // paint canvas
+    this.paper = null; // Paint canvas
     this.oncancel = null;
 
-    // initialize inherited properties:
+    // Initialize inherited properties:
     PaintEditorMorph.uber.init.call(this);
 
-    // override inherited properties:
+    // Override inherited properties:
     this.labelString = "Paint Editor";
     this.createLabel();
 
-    // building the contents happens when I am opened with an IDE
-    // so my extent can be adjusted accordingly (jens)
+    // Building the contents happens when I am opened with an IDE
+    // so my extent can be adjusted accordingly (Jens)
     // this.buildContents();
 };
 
@@ -178,26 +174,26 @@ PaintEditorMorph.prototype.buildContents = function () {
 PaintEditorMorph.prototype.buildToolbox = function () {
     var tools = {
             brush:
-                "Paintbrush tool\n(free draw)",
+                "Paintbrush Tool\n(Free Draw)",
             rectangle:
-                "Stroked Rectangle\n(shift: square)",
+                "Stroked Rectangle\n(Shift: Square)",
             circle:
-                "Stroked Ellipse\n(shift: circle)",
+                "Stroked Ellipse\n(Shift: Circle)",
             eraser:
-                "Eraser tool",
+                "Eraser Tool",
             crosshairs:
-                "Set the rotation center",
+                "Set The Rotation Center",
 
             line:
-                "Line tool\n(shift: vertical/horizontal)",
+                "Line Tool\n(Shift: Vertical/Horizontal)",
             rectangleSolid:
-                "Filled Rectangle\n(shift: square)",
+                "Filled Rectangle\n(Shift: Square)",
             circleSolid:
-                "Filled Ellipse\n(shift: circle)",
+                "Filled Ellipse\n(Shift: Circle)",
             paintbucket:
-                "Fill a region",
+                "Fill A Region",
             pipette:
-                "Pipette tool\n(pick a color anywhere)"
+                "Pipette Tool\n(Pick A Color Anywhere)"
         },
         myself = this,
         left = this.toolbox.left(),
@@ -246,7 +242,7 @@ PaintEditorMorph.prototype.buildEdits = function () {
                 myself.ide.confirm(
                     'This will erase your current drawing. ' +
                     'Are you sure you want to continue?',
-                    'Switch to vector editor?',
+                    'Switch to Vector Editor?',
                     () => {
                         setTimeout(() => {myself.switchToVector(); });
                     }
@@ -457,7 +453,7 @@ PaintEditorMorph.prototype.populatePropertiesMenu = function () {
         "checkbox",
         this,
         function () {myself.shift = !myself.shift; },
-        "Constrain proportions of shapes?\n(you can also hold shift)",
+        "Constrain proportions of shapes?\n(You can also hold Shift)",
         function () {return myself.shift; }
     );
     pc.constrain.label.isBold = false;
