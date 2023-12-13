@@ -1370,8 +1370,8 @@ var MorphicPreferences = standardSettings;
     Support for Retina displays has been pioneered and contributed by
     Bartosz Leper.
 
-    NOTE: this will make changes to the HTMLCanvasElement that - Mostly -
-    Make Morphic usable on retina displays in very high resolution mode
+    NOTE: This will make changes to the HTMLCanvasElement that - Mostly -
+    Make Morphic usable on Retina displays in very high resolution mode
     with crisp fonts and clear fine lines without you (The programmer)
     needing to know any specifics, provided both the display and the browser
     support these (Safari currently doesn't), otherwise these utilities will
@@ -1386,7 +1386,7 @@ var MorphicPreferences = standardSettings;
     Support also will simply do nothing if Retina Support is not possible
     or already disabled, so it's equally safe to call.
 
-    For an example how to make retina support user-specifiable refer to
+    For an example how to make Retina support user-specifiable refer to
     Snap! >> guis.js >> toggleRetina()
 */
 
@@ -1650,7 +1650,7 @@ function embedMetadataPNG(aCanvas, aString) {
 
         newCanvas(extentPoint [, nonRetinaFlag])
 
-    If retina support is enabled such new canvasses will automatically be
+    If Retina support is enabled such new canvasses will automatically be
     high-resolution canvasses, unless the newCanvas() function is given an
     otherwise optional second Boolean <true> argument that explicitly makes
     it a non-retina canvas.
@@ -1671,10 +1671,10 @@ function embedMetadataPNG(aCanvas, aString) {
 
 function enableRetinaSupport() {
 /*
-    === contributed by Bartosz Leper ===
+    === Contributed By Bartosz Leper ===
 
     This installs a series of utilities that allow using Canvas the same way
-    on retina and non-retina displays. If the display is a retina one, the
+    on Retina and Non-Retina displays. If the display is a retina one, the
     underlying dimensions of the Canvas elements are doubled, but this will
     be transparent to the code that uses Canvas. All dimensions read or
     written to the Canvas element will be scaled appropriately.
@@ -1682,15 +1682,15 @@ function enableRetinaSupport() {
     NOTE: This implementation is not exhaustive; it only implements what is
     needed by the Snap! UI.
 
-    [Jens]: like all other retina screen support implementations I've seen
+    [Jens]: Like all other retina screen support implementations I've seen
     Bartosz's patch also does not address putImageData() compatibility when
-    mixing retina-enabled and non-retina canvasses. If you need to manipulate
+    mixing Retina-enabled and Non-Retina canvasses. If you need to manipulate
     pixels in such mixed canvasses, make sure to "downgrade" them all using
     normalizeCanvas() below.
 */
 
     // Get the window's pixel ratio for canvas elements.
-    // See: http://www.html5rocks.com/en/tutorials/canvas/hidpi/
+    // See: https://html5rocks.com/en/tutorials/canvas/hidpi/
     var ctx = document.createElement("canvas").getContext("2d"),
         backingStorePixelRatio = ctx.webkitBackingStorePixelRatio ||
             ctx.mozBackingStorePixelRatio ||
