@@ -2,9 +2,9 @@
 
     api.js
 
-    programmatically interact with a Snap! project
+    Programmatically interact with a Snap! project
 
-    written by Jens Mönig
+    Written by Jens Mönig
     jens@moenig.org
 
     Copyright (C) 2023 by Jens Mönig
@@ -13,50 +13,50 @@
 
     Snap! is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of
-    the License, or (at your option) any later version.
+    published by the Free Software Foundation, either Version 3 of
+    the License, or (At your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
     GNU Affero General Public License for more details.
 
     You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-    prerequisites:
+    Prerequisites:
     --------------
-    needs gui.js, lists.js, objects.js, threads.js and morphic.js
+    Needs gui.js, lists.js, objects.js, threads.js and morphic.js
 
 
-    documentation
+    Documentation
     -------------
-    along with this file you should have received a copy of the Snap! API
+    Along with this file you should have received a copy of the Snap! API
     documentation. If not, see
     https://github.com/jmoenig/Snap/blob/master/API.md
     or https://snap.berkeley.edu/snap/API.md
 
 */
 
-/*global modules, IDE_Morph, isString, Map, List, world, isNil, Project,
-detect, isSnapObject, VariableFrame*/
+/* Global modules, IDE_Morph, isString, Map, List, world, isNil, Project,
+detect, isSnapObject, VariableFrame */
 
-/*jshint esversion: 11*/
+/* JSHint ESVersion: 11 */
 
-// Global stuff ////////////////////////////////////////////////////////
+// Global Stuff ////////////////////////////////////////////////////////
 
 modules.api = '2023-January-30';
 
 // IDE_Morph external communication API
 /*
-    programmatically trigger scripts from outside of Snap!
+    Programmatically trigger scripts from outside of Snap!
     add message listeners to Snap! broadcasts and access
     global variables
 */
 
 window.onmessage = function (event) {
-    // make the API accessible from outside an iframe
+    // Make the API accessible from outside an iframe
     var ide = world.children[0];
     if (!isNil(event.data.selector)) {
         window.top.postMessage(
@@ -70,12 +70,12 @@ window.onmessage = function (event) {
 };
 
 IDE_Morph.prototype.getScenes = function () {
-    // return an array of all scenenames
+    // Return an array of all scenenames
     return this.scenes.itemsArray().map(each => each.name);
 };
 
 IDE_Morph.prototype.getCurrentScene = function () {
-    // return the name of the currently active scene
+    // Return the name of the currently active scene
     return this.scene.name;
 };
 
@@ -88,13 +88,13 @@ IDE_Morph.prototype.switchTo = function (sceneName) {
 };
 
 IDE_Morph.prototype.isRunning = function () {
-    // return true if the active scene is currently running a script
+    // Return true if the active scene is currently running a script
     return this.stage.threads.processes.length > 0;
 };
 
 IDE_Morph.prototype.stop = function () {
-    // stop all currently running processes in the active scene
-    // no matter what, without firing a stop event
+    // Stop all currently running processes in the active scene
+    // No matter what, without firing a stop event
     var stage = this.stage;
     stage.keysPressed = {};
     stage.threads.stopAll();
